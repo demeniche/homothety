@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Homothety · Interactive 3D Guide</title>
-<meta name="description" content="Learn homothety (dilation) interactively: centre, ratio k, enlargement, reduction, negative ratio, properties and 3D. Geometry, grade 9.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='6' cy='26' r='3' fill='%23ffc247'/><path d='M6 26 L14 12 L20 22Z' fill='none' stroke='%234ea1ff' stroke-width='2'/><path d='M6 26 L22 2 L30 18Z' fill='none' stroke='%23ff5c7a' stroke-width='2'/></svg>">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Homothety</title>
+<meta name="description" content="Homothety in 3D: centre, ratio k, enlargement, reduction, negative ratio. Interactive geometry app, grade 9.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23ece8df'/><path d='M5 27 L13 15 L18 23Z' fill='none' stroke='%23161616' stroke-width='2'/><path d='M5 27 L21 3 L31 19Z' fill='none' stroke='%23e2471d' stroke-width='2'/><circle cx='5' cy='27' r='3' fill='%23161616'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script type="importmap">
 { "imports": { "three": "./lib/three.module.js", "three/addons/": "./lib/addons/" } }
@@ -15,112 +15,61 @@
 </head>
 <body>
 <div id="app">
-  <aside id="panel">
-    <header class="brand">
-      <div class="logo" aria-hidden="true">
-        <svg viewBox="0 0 32 32"><circle cx="6" cy="26" r="3" class="lg-c"/><path d="M6 26 L14 12 L20 22Z" class="lg-o"/><path d="M6 26 L22 2 L30 18Z" class="lg-i"/><path d="M6 26 L22 2 M6 26 L30 18" class="lg-r"/></svg>
-      </div>
-      <div>
-        <h1 data-i18n="appTitle">Homothety</h1>
-        <p data-i18n="appSub"></p>
-      </div>
-      <div class="lang" role="group" aria-label="Language">
-        <button data-lang="en">EN</button><button data-lang="uz">UZ</button>
-      </div>
-    </header>
+  <!-- Top bar -->
+  <header id="topbar">
+    <div class="appname">HOMOTHETY<span class="dim">&nbsp;/&nbsp;</span><span id="sceneName" class="dim"></span></div>
+    <div class="top-mid">
+      <button id="btnScenes" class="tb"><span data-i18n="scenes"></span> <svg viewBox="0 0 10 6" class="caret"><path d="M1 1l4 4 4-4"/></svg></button>
+      <button id="btnTutorial" class="tb accent"><svg viewBox="0 0 12 12" class="ic12"><path d="M3 1.5v9l7-4.5z"/></svg><span data-i18n="tutorial"></span></button>
+      <button id="btnTheory" class="tb" data-i18n="theory"></button>
+    </div>
+    <div class="top-right">
+      <div class="langsw"><button data-lang="en">EN</button><button data-lang="uz">UZ</button></div>
+      <button id="btnSettings" class="tb icon" aria-label="Settings"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.6"/><path d="M10 1.8v2.4M10 15.8v2.4M1.8 10h2.4M15.8 10h2.4M4.2 4.2l1.7 1.7M14.1 14.1l1.7 1.7M4.2 15.8l1.7-1.7M14.1 5.9l1.7-1.7"/></svg></button>
+    </div>
+  </header>
 
-    <nav class="tabs" role="tablist">
-      <button data-tab="learn" data-i18n="tabLearn"></button>
-      <button data-tab="play" data-i18n="tabPlay"></button>
-      <button data-tab="presets" data-i18n="tabPresets"></button>
-      <button data-tab="settings" data-i18n="tabSettings"></button>
-    </nav>
+  <!-- Tool rail -->
+  <nav id="rail">
+    <button class="tool" data-tool="move" data-tip="tipMove" data-key="V"><svg viewBox="0 0 20 20"><path d="M5 3l10 6-4.5 1.2L8.5 15z"/></svg></button>
+    <button class="tool" data-tool="add" data-tip="tipAdd" data-key="P"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.5" class="fill"/><path d="M10 2v4M10 14v4M2 10h4M14 10h4"/></svg></button>
+    <button class="tool" data-tool="centre" data-tip="tipCentre" data-key="O"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="5"/><path d="M10 3v14M3 10h14"/></svg></button>
+    <div class="sep"></div>
+    <button class="tool act" data-act="undo" data-tip="tipUndo" data-key="⌫"><svg viewBox="0 0 20 20"><path d="M7 5L3 9l4 4M3 9h9a5 5 0 010 10h-2"/></svg></button>
+    <button class="tool act" data-act="clear" data-tip="tipClear"><svg viewBox="0 0 20 20"><path d="M4 6h12M8 6V3.5h4V6M6 6l.8 11h6.4L14 6"/></svg></button>
+    <div class="sep"></div>
+    <button class="tool act" data-act="top" data-tip="tipTop" data-key="T"><svg viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="12"/><path d="M4 8h12M8 4v12" class="thin"/></svg></button>
+    <button class="tool act" data-act="iso" data-tip="tipIso" data-key="3"><svg viewBox="0 0 20 20"><path d="M10 2l7 4v8l-7 4-7-4V6z M3 6l7 4 7-4M10 10v8"/></svg></button>
+    <button class="tool act" data-act="fit" data-tip="tipFit" data-key="F"><svg viewBox="0 0 20 20"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg></button>
+    <button class="tool act" data-act="orbit" data-tip="tipOrbit" data-key="R"><svg viewBox="0 0 20 20"><ellipse cx="10" cy="10" rx="7.5" ry="3.5"/><path d="M15 4.5l2.5 2-3 1"/></svg></button>
+  </nav>
 
-    <section class="tab-page" id="page-learn">
-      <div class="progress" id="stepDots"></div>
-      <div class="step-counter" id="stepCounter"></div>
-      <h2 id="stepTitle"></h2>
-      <div id="stepBody" class="prose"></div>
-      <div id="stepTry" class="tryit"><span class="tryit-tag" data-i18n="tryIt"></span><span id="stepTryText"></span></div>
-      <div class="step-nav">
-        <button id="prevStep" class="btn ghost" data-i18n="prev"></button>
-        <button id="nextStep" class="btn primary" data-i18n="next"></button>
-      </div>
-    </section>
-
-    <section class="tab-page" id="page-play">
-      <div class="field">
-        <label data-i18n="tools"></label>
-        <div class="seg" id="toolSeg">
-          <button data-tool="move" data-i18n="toolMove"></button>
-          <button data-tool="add" data-i18n="toolAdd"></button>
-          <button data-tool="centre" data-i18n="toolCentre"></button>
-        </div>
-        <p class="hint" id="toolHint"></p>
-      </div>
-      <div class="field">
-        <label><span data-i18n="shape"></span> · <span id="ptCount"></span></label>
-        <p class="hint" id="solidNote" data-i18n="solidNote"></p>
-        <div class="row">
-          <button class="btn small" id="btnRemoveLast" data-i18n="removeLast"></button>
-          <button class="btn small" id="btnClear" data-i18n="clear"></button>
-          <button class="btn small" id="btnFlat" data-i18n="backFlat"></button>
-        </div>
-      </div>
-      <div class="field">
-        <label data-i18n="centreQuick"></label>
-        <div class="row">
-          <button class="btn small" data-centre="origin" data-i18n="cOrigin"></button>
-          <button class="btn small" data-centre="centroid" data-i18n="cCentroid"></button>
-          <button class="btn small" data-centre="vertex" data-i18n="cVertex"></button>
-          <button class="btn small" data-centre="outside" data-i18n="cOutside"></button>
-        </div>
-      </div>
-      <div class="field">
-        <label data-i18n="selected"></label>
-        <div id="inspector"></div>
-      </div>
-      <div class="field">
-        <label data-i18n="show"></label>
-        <div class="toggles" id="showToggles"></div>
-      </div>
-    </section>
-
-    <section class="tab-page" id="page-presets">
-      <div id="presetList"></div>
-    </section>
-
-    <section class="tab-page" id="page-settings">
-      <div id="settingsForm"></div>
-    </section>
-
-    <footer class="foot" data-i18n="footer"></footer>
-  </aside>
-
+  <!-- Viewport -->
   <main id="stage">
-    <div id="formulaCard" class="card glass"></div>
-    <div class="view-tools glass">
-      <button data-view="top" data-i18n="viewTop"></button>
-      <button data-view="iso" data-i18n="view3d"></button>
-      <button data-view="fit" data-i18n="viewFit"></button>
-      <button data-view="rotate" id="btnRotate" data-i18n="viewRotate"></button>
-    </div>
-    <div id="measureCard" class="card glass"></div>
-    <div class="kbar glass">
-      <button id="btnPlay" class="btn primary play"><svg viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z"/></svg><span data-i18n="play"></span></button>
-      <div class="kctl">
-        <div class="ktop">
-          <label for="kSlider" data-i18n="kLabel"></label>
-          <input id="kInput" type="number" step="0.05" min="-5" max="5">
-        </div>
-        <input id="kSlider" type="range" min="-3" max="3" step="0.05">
-        <div class="kticks"><span>−3</span><span>−2</span><span>−1</span><span>0</span><span>1</span><span>2</span><span>3</span></div>
-      </div>
-      <div class="chips" id="kChips"></div>
-    </div>
-    <div id="kBadge" class="badge"></div>
+    <div id="hud-k" class="hud"></div>
+    <div id="tip" class="tooltip"></div>
   </main>
+
+  <!-- Inspector -->
+  <aside id="inspector"></aside>
+
+  <!-- k ruler -->
+  <footer id="kbar">
+    <button id="btnPlay" class="playbtn" aria-label="Play"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7-4.5z"/></svg></button>
+    <div class="kval"><span class="klabel">k</span><input id="kInput" type="text" inputmode="decimal" spellcheck="false"></div>
+    <div id="ruler"><canvas id="rulerCanvas"></canvas></div>
+  </footer>
 </div>
+
+<!-- Popovers -->
+<div id="scenesPop" class="pop"></div>
+<div id="settingsPop" class="pop"></div>
+<div id="theoryPop" class="pop sheet"></div>
+
+<!-- Tutorial overlay -->
+<div id="coachSpot"></div>
+<div id="coach" class="coach"></div>
+
 <script type="module" src="js/main.js"></script>
 </body>
 </html>

@@ -1,66 +1,52 @@
-# Homothety — an interactive 3D guide
+# Homothety
 
-A geometry project for grade 9: an interactive website that explains **homothety** (dilation) step by step, with a 3D scene you can turn around, a playground for your own figures, and ready-made presets. English and Uzbek.
+An interactive 3D app for learning homothety (dilation) in grade-9 geometry. It runs in the browser, in English or Uzbek.
 
-## What's inside
+## How it works
 
-**Learn**: a 10-step tutorial. Each step sets up and animates the scene:
+- **Viewport**: a 3D scene. Drag empty space to turn the camera, scroll to zoom, right-drag to pan.
+- **Tool rail** (left): Move `V` · Add points `P` · Place centre `O` · Undo · Clear · Top view `T` · 3D view `3` · Fit `F` · Auto-rotate `R`.
+- **k ruler** (bottom): drag it to set the ratio. It snaps to ½, 1, 2 and the other common values. You can also type k, or use the arrow keys. **▶** (or `Space`) animates every point from k = 1.
+- **Inspector** (right): coordinates of O and the selected point, the rule worked out on that point (OA′ = |k|·OA and x′ = x₀ + k(x − x₀)), and a **ratios** table with live checks (distances and sides ×|k|, area ×k², angles unchanged, volume ×|k|³).
+- **Drag a red point** along its dashed line to change k by hand.
+- **Scenes**: 16 ready-made setups: enlargement, reduction, negative k, central symmetry, O at a vertex or inside the figure, finding the centre, a star, a cube, an hourglass and two tetrahedra.
+- **Formulas**: a one-screen reference sheet.
+- **Settings**: Paper or Night theme, grid snap, step of k, decimal places, animation speed, image naming (A′ or A₁).
 
-1. What is a homothety? (centre O, ratio k)
-2. The centre O
-3. The rule for one point: OA′ = |k|·OA, vector form, and dragging A′ to change k
-4. The image of a figure, with the coordinate formulas x′ = x₀ + k(x − x₀)
-5. Enlargement and reduction
-6. Negative ratio, central symmetry (k = −1), and why k ≠ 0
-7. Properties: lengths ×|k|, area ×k², angles stay the same, lines map to parallel lines
-8. How to find the centre from a figure and its image
-9. Beyond the textbook: homothety in 3D space (volume ×|k|³)
-10. Check yourself: a 6-question quiz
+## Tutorial
 
-**Playground**
-- Click to add vertices, place the centre O anywhere, and drag points.
-- Drag a red image point along its line to change k directly.
-- Change k with the slider, the number box or the quick chips. **Play** animates every point from k = 1 to the chosen k.
-- A live **rule card** checks the formula on the selected point.
-- A live **measurements card** shows distances from O, sides, perimeter, area and angles (or edges, surface and volume for solids), with their ratios.
+Press **Tutorial**. It also starts by itself on the first visit. It works like a game: it highlights what to press or drag, waits for you to do it, and then explains what happened in one line. It has 13 tasks and 3 challenges:
 
-**Presets**: 16 examples: enlargement, reduction, k = 3, central symmetry, negative k, centre at a vertex or inside the figure, finding the centre, a pentagon, a star, a cube, an hourglass, a pyramid and a star made of two tetrahedra.
+1. Drag the ruler to k = 2
+2. Drag the centre O
+3. Press Play
+4. Set k = ½
+5. Make k negative
+6. Set k = −1 (central symmetry)
+7. Drag A′: k follows your hand
+8. Read the ratios
+9. Pick the + tool
+10. Click four points to build a shape
+11. Put O inside it
+12. Turn the camera
+13. Load the cube from Scenes
 
-**Settings**: language (EN / UZ), dark or light theme (light works better on a projector), snap to grid, step of k, decimal places, animation speed, image naming style (A′ or A₁), and grid on or off.
+Then come the challenges:
 
-## Running it
+- **Challenge 1:** land the image on a dashed target (k = 3).
+- **Challenge 2:** do it again (k = −½).
+- **Challenge 3:** find the hidden centre. The lines through matching points cross at O.
 
-Open it online through GitHub Pages (see below). To run it on your own computer, serve the folder with any static web server, for example:
+## Run locally
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then open http://localhost:8000. Three.js is included in `lib/`, so the site works without internet, apart from the web font.
+Then open http://localhost:8000. Three.js is bundled in `lib/`, so the app works offline, apart from the web font.
 
-## Publishing on GitHub Pages
+## Publish
 
-Repository **Settings → Pages → Build and deployment → Deploy from a branch → `main` / root**. The site will appear at `https://<username>.github.io/homothety/`.
+Repository **Settings → Pages → Deploy from a branch → `main` / root**. The site appears at `https://<username>.github.io/homothety/`.
 
-## Controls
-
-| Action | How |
-|---|---|
-| Rotate the camera | drag empty space |
-| Zoom | mouse wheel / pinch |
-| Pan | right-drag |
-| Move a point or O | drag it |
-| Change k by hand | drag a red point along its dashed line |
-| Delete the selected point | Delete key |
-| Play the animation | Space |
-| Next / previous step (Learn) | → / ← |
-
-## The maths
-
-For a homothety with centre O and ratio k (k ≠ 0), each point A goes to the point A′ with
-
-  **OA′ = k · OA** (as vectors), so **OA′ = |k| · OA** (as lengths).
-
-In coordinates, with O = (x₀, y₀): x′ = x₀ + k(x − x₀), y′ = y₀ + k(y − y₀).
-
-Built with [Three.js](https://threejs.org) (MIT licence, see `lib/THREE-LICENSE`).
+Built with [Three.js](https://threejs.org) (MIT, see `lib/THREE-LICENSE`).
